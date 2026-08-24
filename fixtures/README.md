@@ -7,6 +7,7 @@ These documents are original test material for manually checking FeatherMark. Op
 | `sample.md` | Fast smoke test for normal prose, lists, tasks, code, tables, a relative image, and escaped HTML. |
 | `gfm-edge-cases.md` | Deep headings and lists, fenced code inside a list, alignment, footnotes, escapes, and Unicode. |
 | `typography-and-overflow.md` | Long inline code and URLs, nested quote/code layout, duplicate headings, fallback fonts, and reading measure. |
+| `portfolio-showcase.md` | Curated table, checklist, code, prose, and Unicode used for the repository rendering screenshot. |
 | `links-and-images.md` | Fragment, web, email, and local links; ordinary, percent-encoded, and missing relative images. |
 | `long-document.md` | Scrolling, redraw, reload, and general responsiveness on a longer file. |
 | `utf8.md` | A compact UTF-8 loading check across several writing systems. |

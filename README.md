@@ -100,7 +100,7 @@ The current binaries are not code-signed. Windows SmartScreen may therefore show
 - File picker, command-line opening, drag and drop, Windows **Open with**, a Markdown context-menu command, and optional default file associations.
 - Clean maximum-width reading layout with Unicode-friendly system font fallbacks.
 
-![FeatherMark rendering typography and overflow fixtures](docs/images/markdown-rendering.png)
+![FeatherMark rendering a release overview with a table, task checklist, code block, and outline in the default Dracula theme](docs/images/markdown-rendering.png)
 
 <p align="center">
   <img src="docs/images/context-menu.png" alt="FeatherMark document context menu with Open, Edit, Save, Save As, and Reload actions">

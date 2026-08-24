@@ -1,3 +1,9 @@
+param(
+    [string]$FixturePath = 'fixtures\sample.md',
+    [string]$OutputPrefix = 'portfolio',
+    [switch]$SkipContextMenu
+)
+
 $ErrorActionPreference = 'Stop'
 
 Add-Type -AssemblyName System.Drawing
@@ -46,7 +52,7 @@ public static class FeatherMarkPortfolioCapture {
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $configuration = Get-Content -LiteralPath (Join-Path $projectRoot 'src-tauri\tauri.conf.json') -Raw | ConvertFrom-Json
 $executable = Join-Path $projectRoot "dist\windows\FeatherMark-$($configuration.version)-windows-x64-portable.exe"
-$fixture = Join-Path $projectRoot 'fixtures\sample.md'
+$fixture = Join-Path $projectRoot $FixturePath
 $qaDirectory = Join-Path $projectRoot 'qa'
 New-Item -ItemType Directory -Path $qaDirectory -Force | Out-Null
 
@@ -94,30 +100,32 @@ try {
     [void][FeatherMarkPortfolioCapture]::SetForegroundWindow($window)
     Start-Sleep -Seconds 2
 
-    $readerPath = Join-Path $qaDirectory 'portfolio-reader.png'
+    $readerPath = Join-Path $qaDirectory "$OutputPrefix-reader.png"
     Save-ScreenRegion $window $readerPath
 
-    $rect = [FeatherMarkPortfolioCapture+Rect]::new()
-    if (-not [FeatherMarkPortfolioCapture]::GetWindowRect($window, [ref]$rect)) {
-        throw 'Could not position the context-menu click.'
-    }
-    $screenPoint = [FeatherMarkPortfolioCapture+Point]::new()
-    $screenPoint.X = $rect.Left + 430
-    $screenPoint.Y = $rect.Top + 225
-    [void][FeatherMarkPortfolioCapture]::SetCursorPos($screenPoint.X, $screenPoint.Y)
-    $targetWindow = [FeatherMarkPortfolioCapture]::WindowFromPoint($screenPoint)
-    $clientPoint = $screenPoint
-    [void][FeatherMarkPortfolioCapture]::ScreenToClient($targetWindow, [ref]$clientPoint)
-    $packedPoint = [IntPtr](($clientPoint.Y -shl 16) -bor ($clientPoint.X -band 0xffff))
-    [void][FeatherMarkPortfolioCapture]::PostMessage($targetWindow, 0x0204, [IntPtr]2, $packedPoint)
-    [void][FeatherMarkPortfolioCapture]::PostMessage($targetWindow, 0x0205, [IntPtr]0, $packedPoint)
-    Start-Sleep -Milliseconds 700
+    if (-not $SkipContextMenu) {
+        $rect = [FeatherMarkPortfolioCapture+Rect]::new()
+        if (-not [FeatherMarkPortfolioCapture]::GetWindowRect($window, [ref]$rect)) {
+            throw 'Could not position the context-menu click.'
+        }
+        $screenPoint = [FeatherMarkPortfolioCapture+Point]::new()
+        $screenPoint.X = $rect.Left + 430
+        $screenPoint.Y = $rect.Top + 225
+        [void][FeatherMarkPortfolioCapture]::SetCursorPos($screenPoint.X, $screenPoint.Y)
+        $targetWindow = [FeatherMarkPortfolioCapture]::WindowFromPoint($screenPoint)
+        $clientPoint = $screenPoint
+        [void][FeatherMarkPortfolioCapture]::ScreenToClient($targetWindow, [ref]$clientPoint)
+        $packedPoint = [IntPtr](($clientPoint.Y -shl 16) -bor ($clientPoint.X -band 0xffff))
+        [void][FeatherMarkPortfolioCapture]::PostMessage($targetWindow, 0x0204, [IntPtr]2, $packedPoint)
+        [void][FeatherMarkPortfolioCapture]::PostMessage($targetWindow, 0x0205, [IntPtr]0, $packedPoint)
+        Start-Sleep -Milliseconds 700
 
-    $contextPath = Join-Path $qaDirectory 'portfolio-context-menu.png'
-    Save-ScreenRegion $window $contextPath
+        $contextPath = Join-Path $qaDirectory "$OutputPrefix-context-menu.png"
+        Save-ScreenRegion $window $contextPath
+        Write-Output "ContextMenu: $contextPath"
+    }
 
     Write-Output "Reader: $readerPath"
-    Write-Output "ContextMenu: $contextPath"
 }
 finally {
     if ($window -ne [IntPtr]::Zero) {
