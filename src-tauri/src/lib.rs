@@ -1051,7 +1051,7 @@ pub fn run() {
                     let _ = window.show();
                     let _ = window.set_focus();
                 }
-            }
+            };
         }
         _ => {}
     });
