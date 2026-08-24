@@ -4,16 +4,6 @@ All notable changes to FeatherMark are documented here. The project follows [Sem
 
 ## [Unreleased]
 
-### Added
-
-- Compact always-visible theme dropdown with ten bundled choices.
-- GitHub, Nord, Solarized, Sepia, and Dracula reading palettes without additional runtime dependencies.
-- `Ctrl+D` shortcut for quickly toggling Feather Light and Feather Dark.
-- Automated contrast checks for primary text, muted text, and links across every palette.
-- Dracula as the default theme for new installations and portable launches.
-- A lightweight document context menu with direct Edit/Preview, Save, Save As, Reload, and Open actions.
-- The always-visible Edit/Preview button moved beside the tab controls so it remains easy to reach.
-
 ### Planned
 
 - Code signing for public Windows releases.
@@ -30,6 +20,10 @@ All notable changes to FeatherMark are documented here. The project follows [Sem
 - Plain-text edit mode, debounced preview, explicit Save and Save As, and unsaved-change warnings.
 - System, light, and dark themes; text-size controls; full screen; and persistent minimal preferences.
 - Windows x64 portable executable and per-user NSIS installer.
+- Compact always-visible theme dropdown with ten bundled choices, Dracula as the first-run default, and automated contrast checks.
+- `Ctrl+D` shortcut for quickly toggling Feather Light and Feather Dark.
+- A lightweight document context menu with direct Edit/Preview, Save, Save As, Reload, and Open actions.
+- An always-visible Edit/Preview button beside the tab controls.
 - Optional `.md` and `.markdown` registration with a user-confirmed Windows Default Apps handoff.
 - Installed-app entries in Windows **Open with** and the Markdown file context menu.
 - Focused tests and Markdown fixtures for rendering, file loading, unsafe input, path resolution, tab state, and portable behaviour.
