@@ -1,0 +1,73 @@
+name: Bug report
+description: Report a reproducible FeatherMark problem
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not attach private documents or disclose security vulnerabilities here.
+  - type: input
+    id: version
+    attributes:
+      label: FeatherMark version
+      placeholder: 0.1.0 portable or installer
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 25H2, x64
+    validations:
+      required: true
+  - type: dropdown
+    id: distribution
+    attributes:
+      label: Distribution
+      options:
+        - Portable
+        - Installed
+        - Development build
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Tell us what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Open...
+        2. Click...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Minimal Markdown fixture
+      description: Paste the smallest safe Markdown example that reproduces the issue, if applicable.
+      render: markdown
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Add sanitized screenshots, compact error messages, or relevant details.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues first.
+          required: true
+        - label: I removed private or sensitive information.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true

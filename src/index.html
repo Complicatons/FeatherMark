@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" data-theme="dracula">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FeatherMark</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <header class="menubar" aria-label="Application menu">
+      <div class="menu-wrap">
+        <button class="menu-trigger" type="button" data-menu="file-menu">File</button>
+        <div id="file-menu" class="menu-popover" role="menu" hidden>
+          <button id="open-button" type="button" role="menuitem"><span>Open in new tab…</span><kbd>Ctrl+O</kbd></button>
+          <button id="save-button" type="button" role="menuitem" disabled><span>Save</span><kbd>Ctrl+S</kbd></button>
+          <button id="save-as-button" type="button" role="menuitem" disabled><span>Save As…</span><kbd>Ctrl+Shift+S</kbd></button>
+          <button id="close-button" type="button" role="menuitem" disabled><span>Close tab</span><kbd>Ctrl+W</kbd></button>
+          <div class="menu-separator"></div>
+          <button id="about-button" type="button" role="menuitem"><span>About FeatherMark</span></button>
+        </div>
+      </div>
+      <div class="menu-wrap">
+        <button class="menu-trigger" type="button" data-menu="navigate-menu">Navigate</button>
+        <div id="navigate-menu" class="menu-popover" role="menu" hidden>
+          <button type="button" role="menuitem" disabled><span>← Back</span><kbd>Alt+←</kbd></button>
+          <button type="button" role="menuitem" disabled><span>→ Forward</span><kbd>Alt+→</kbd></button>
+          <div class="menu-separator"></div>
+          <button id="outline-focus-button" type="button" role="menuitem" disabled><span>Document outline</span></button>
+        </div>
+      </div>
+      <div class="menu-wrap">
+        <button class="menu-trigger" type="button" data-menu="view-menu">View</button>
+        <div id="view-menu" class="menu-popover" role="menu" hidden>
+          <button id="mode-button" type="button" role="menuitem" disabled><span>Edit source</span><kbd>Ctrl+E</kbd></button>
+          <button id="reload-button" type="button" role="menuitem" disabled><span>Reload</span><kbd>Ctrl+R</kbd></button>
+          <div class="menu-separator"></div>
+          <button id="explorer-toggle" type="button" role="menuitem"><span>✓ File panel</span><kbd>Ctrl+Shift+E</kbd></button>
+          <button id="outline-toggle" type="button" role="menuitem"><span>✓ Outline</span><kbd>Ctrl+Shift+O</kbd></button>
+          <div class="menu-separator"></div>
+          <button id="fullscreen-button" type="button" role="menuitem"><span>Full screen</span><kbd>F11</kbd></button>
+        </div>
+      </div>
+      <div class="nav-buttons" aria-label="Document history">
+        <button type="button" title="Back" aria-label="Back" disabled>◀</button>
+        <button type="button" title="Forward" aria-label="Forward" disabled>▶</button>
+      </div>
+      <span class="menu-spacer"></span>
+      <span id="document-path" class="document-path">No document open</span>
+      <label class="theme-picker" title="Choose a reading theme">
+        <span>Theme</span>
+        <select id="theme-select" aria-label="Theme">
+          <option value="system">System</option>
+          <option value="light">Feather Light</option>
+          <option value="dark">Feather Dark</option>
+          <option value="github-light">GitHub Light</option>
+          <option value="github-dark">GitHub Dark</option>
+          <option value="nord">Nord</option>
+          <option value="solarized-light">Solarized Light</option>
+          <option value="solarized-dark">Solarized Dark</option>
+          <option value="sepia">Sepia</option>
+          <option value="dracula" selected>Dracula</option>
+        </select>
+      </label>
+      <span id="local-indicator" class="local-indicator" hidden><i></i>LOCAL</span>
+    </header>
+
+    <div class="tabbar" aria-label="Open documents">
+      <div id="tabs-container" class="tabs-container" role="tablist"></div>
+      <button id="new-tab-button" class="new-tab-button" type="button" title="Open Markdown (Ctrl+O)" aria-label="Open Markdown">+</button>
+      <button id="quick-edit-button" class="quick-edit-button" type="button" title="Edit source (Ctrl+E)" disabled>Edit</button>
+      <span class="tabbar-spacer"></span>
+    </div>
+
+    <div id="workspace" class="workspace">
+      <aside id="explorer" class="side-panel explorer" aria-label="File panel">
+        <div class="panel-title-row">
+          <strong id="folder-name">FeatherMark</strong>
+          <button id="refresh-files-button" type="button" title="Refresh files" aria-label="Refresh files">↻</button>
+        </div>
+        <div class="explorer-tools">
+          <span>Sort:</span>
+          <select id="file-sort" aria-label="Sort files">
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+          </select>
+        </div>
+        <div id="file-tree" class="file-tree" aria-live="polite"><p class="panel-empty">Open a file to show its folder.</p></div>
+      </aside>
+
+      <main id="main-area">
+        <section id="empty-state" class="empty-state">
+          <div class="feather-mark" aria-hidden="true">⌁</div>
+          <p>Drop a Markdown file here or open one.</p>
+          <button id="empty-open-button" type="button">Open Markdown</button>
+        </section>
+        <article id="preview" class="markdown-body" tabindex="0" hidden></article>
+        <textarea id="editor" aria-label="Markdown source editor" spellcheck="false" hidden></textarea>
+        <div id="drop-overlay" hidden>Drop Markdown to open</div>
+      </main>
+
+      <aside id="outline" class="side-panel outline" aria-label="Document outline">
+        <div class="outline-tools">
+          <button id="expand-outline-button" type="button">Expand All</button>
+          <button id="collapse-outline-button" type="button">Collapse All</button>
+        </div>
+        <nav id="outline-list" aria-label="Headings"><p class="panel-empty">Headings appear here.</p></nav>
+      </aside>
+    </div>
+
+    <div id="document-context-menu" class="context-menu" role="menu" aria-label="Document actions" hidden>
+      <button id="context-open-button" type="button" role="menuitem"><span>Open in new tab…</span><kbd>Ctrl+O</kbd></button>
+      <div class="menu-separator"></div>
+      <button id="context-mode-button" type="button" role="menuitem" disabled><span>Edit source</span><kbd>Ctrl+E</kbd></button>
+      <button id="context-save-button" type="button" role="menuitem" disabled><span>Save</span><kbd>Ctrl+S</kbd></button>
+      <button id="context-save-as-button" type="button" role="menuitem" disabled><span>Save As…</span><kbd>Ctrl+Shift+S</kbd></button>
+      <button id="context-reload-button" type="button" role="menuitem" disabled><span>Reload</span><kbd>Ctrl+R</kbd></button>
+    </div>
+
+    <div id="status" role="status" aria-live="polite" hidden></div>
+    <dialog id="about-dialog">
+      <h2>FeatherMark</h2>
+      <p>A tiny, fast Markdown viewer.</p>
+      <p class="muted">Version 0.1.0 · Local files only · No telemetry</p>
+      <form method="dialog"><button type="submit">Close</button></form>
+    </dialog>
+  </body>
+</html>

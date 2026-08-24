@@ -1,0 +1,43 @@
+name: Feature request
+description: Propose a small, focused FeatherMark improvement
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        FeatherMark favours small, fast, viewer-focused features. Please explain the problem before proposing an implementation.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What viewer workflow is difficult or impossible today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the smallest useful solution.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Could this be solved without another dependency, persistent feature, panel, or mode?
+  - type: textarea
+    id: cost
+    attributes:
+      label: Lightweight impact
+      description: Note likely effects on executable size, startup, memory, dependencies, and interface complexity.
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This keeps FeatherMark focused on viewing and basic source editing.
+          required: true
+        - label: This does not require accounts, cloud services, telemetry, plugins, or background processes.
+          required: true

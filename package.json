@@ -1,0 +1,17 @@
+{
+  "name": "feathermark",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A tiny, fast Markdown viewer",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "check:themes": "node scripts/check-theme-contrast.js",
+    "portable": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-portable.ps1",
+    "package:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-windows.ps1",
+    "icon": "tauri icon src-tauri/icons/feathermark.svg"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.8.5"
+  }
+}
