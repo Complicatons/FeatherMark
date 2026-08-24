@@ -1027,6 +1027,32 @@ pub fn run() {
                 std::process::exit(0);
             }
         }
+        #[cfg(target_os = "macos")]
+        RunEvent::Opened { urls } => {
+            let paths = urls
+                .iter()
+                .filter_map(|url| url.to_file_path().ok())
+                .filter(|path| is_markdown_path(path))
+                .collect::<Vec<_>>();
+            if paths.is_empty() {
+                return;
+            }
+
+            let state = app_handle.state::<AppState>();
+            if let Ok(mut documents) = state.documents.lock() {
+                for path in paths {
+                    if let Ok(source) = read_markdown_file(&path) {
+                        documents.add_or_activate(path, source);
+                    }
+                }
+                if let Some(window) = app_handle.get_webview_window("main") {
+                    let _ = window.set_title(&title_for(documents.active()));
+                    let _ = window.emit("documents-opened", ());
+                    let _ = window.show();
+                    let _ = window.set_focus();
+                }
+            }
+        }
         _ => {}
     });
 }
@@ -1195,7 +1221,7 @@ mod tests {
     #[test]
     fn portable_mode_is_selected_only_by_the_distribution_filename() {
         assert!(is_portable_executable(Path::new(
-            "FeatherMark-0.1.0-windows-x64-portable.exe"
+            "FeatherMark-0.2.0-windows-x64-portable.exe"
         )));
         assert!(!is_portable_executable(Path::new("feathermark.exe")));
     }

@@ -3,6 +3,8 @@ const { listen } = window.__TAURI__.event;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
+const isMac = /Mac/.test(navigator.platform);
+const primaryKeyLabel = isMac ? "⌘" : "Ctrl";
 
 const elements = {
   open: $("#open-button"),
@@ -274,7 +276,7 @@ function updateDocumentChrome() {
     .forEach((control) => { control.disabled = !hasDocument; });
   elements.quickEdit.disabled = !hasDocument;
   elements.quickEdit.textContent = editing ? "Preview" : "Edit";
-  elements.quickEdit.title = editing ? "Show preview (Ctrl+E)" : "Edit source (Ctrl+E)";
+  elements.quickEdit.title = editing ? `Show preview (${primaryKeyLabel}+E)` : `Edit source (${primaryKeyLabel}+E)`;
   elements.contextMode.disabled = !hasDocument;
   elements.contextMode.querySelector("span").textContent = editing ? "Return to preview" : "Edit source";
   [elements.contextSave, elements.contextSaveAs, elements.contextReload]
@@ -625,20 +627,37 @@ window.addEventListener("keydown", (event) => {
   else if (ctrl && (event.key === "+" || event.key === "=")) { event.preventDefault(); changeTextSize(1); }
   else if (ctrl && event.key === "-") { event.preventDefault(); changeTextSize(-1); }
   else if (ctrl && event.key === "0") { event.preventDefault(); changeTextSize(0); }
-  else if (event.key === "F11") { event.preventDefault(); attempt(() => invoke("toggle_fullscreen")); }
+  else if (event.key === "F11" || (isMac && event.metaKey && event.ctrlKey && event.key.toLowerCase() === "f")) { event.preventDefault(); attempt(() => invoke("toggle_fullscreen")); }
   else if (event.key === "Escape") closeMenus();
 });
 
+function adaptShortcutLabels() {
+  if (!isMac) return;
+  $$('kbd').forEach((label) => {
+    label.textContent = label.textContent.split("Ctrl").join("⌘");
+    if (label.textContent === "F11") label.textContent = "⌃⌘F";
+  });
+  $$('[title*="Ctrl+"]').forEach((element) => {
+    element.title = element.title.split("Ctrl").join("⌘");
+  });
+}
+
+async function syncDocumentsFromBackend() {
+  const initial = await invoke("initial_documents");
+  tabs.clear();
+  for (const tab of initial.tabs) tabs.set(tab.id, tab);
+  if (initial.active) applyDocument(initial.active);
+  else applyNoDocument();
+}
+
 async function initialize() {
+  adaptShortcutLabels();
   preferences = await invoke("get_preferences");
   applyPreferences();
   setPanel("explorer", true);
   setPanel("outline", true);
-  const initial = await invoke("initial_documents");
-  for (const tab of initial.tabs) tabs.set(tab.id, tab);
-  if (initial.active) applyDocument(initial.active);
-  else applyNoDocument();
 
+  await listen("documents-opened", syncDocumentsFromBackend);
   await listen("markdown-drop", (event) => openPath(event.payload));
   await listen("app-error", (event) => showStatus(event.payload, true));
   await listen("confirm-close", async () => {
@@ -649,6 +668,7 @@ async function initialize() {
   await listen("tauri://drag-enter", () => { elements.dropOverlay.hidden = false; });
   await listen("tauri://drag-leave", () => { elements.dropOverlay.hidden = true; });
   await listen("tauri://drag-drop", () => { elements.dropOverlay.hidden = true; });
+  await syncDocumentsFromBackend();
 }
 
 initialize().catch((error) => showStatus(errorMessage(error), true));

@@ -6,7 +6,8 @@ FeatherMark is early-stage software. Security fixes are applied to the latest re
 
 | Version | Supported |
 | --- | --- |
-| 0.1.x | Yes |
+| 0.2.x | Yes |
+| 0.1.x | No |
 | Older versions | No |
 
 ## Reporting a vulnerability
@@ -15,7 +16,7 @@ Please do not open a public issue for a suspected vulnerability.
 
 Use GitHub's **Report a vulnerability** option in the repository's Security tab to send a private report. Include:
 
-- The affected FeatherMark version and Windows version.
+- The affected FeatherMark version, operating system, version, and processor architecture.
 - A minimal Markdown file or exact reproduction steps.
 - The impact you observed or believe is possible.
 - Any suggested mitigation, if you have one.

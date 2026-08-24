@@ -13,12 +13,14 @@ Use the bug-report template for defects and the feature-request template for pro
 
 ## Development setup
 
-Windows is the currently verified development platform. Install Rust stable with the MSVC target, Visual Studio C++ Build Tools, Node.js LTS, and WebView2 Runtime.
+FeatherMark is built on Windows, macOS, and Linux. Install Rust stable and Node.js LTS on every platform. Windows additionally needs Visual Studio C++ Build Tools and WebView2; macOS needs Xcode Command Line Tools; Linux needs WebKitGTK 4.1 development libraries, libappindicator, librsvg, `patchelf`, and `xdg-utils`.
 
 ```powershell
 npm.cmd ci
 npm.cmd run dev
 ```
+
+On macOS and Linux use `npm ci` and `npm run dev`. The complete platform prerequisite commands are in [README.md](README.md#build-from-source).
 
 Before submitting a pull request, run:
 
@@ -29,6 +31,8 @@ node --check src/app.js
 npm.cmd run check:themes
 npm.cmd run build
 ```
+
+Use `npm` instead of `npm.cmd` outside Windows. Pull requests also run this verification on Windows x64, macOS Apple Silicon, and Linux x64.
 
 For rendering or file-handling changes, add or update a focused Rust test and, when useful, a minimal file under `fixtures/`.
 

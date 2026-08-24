@@ -8,7 +8,7 @@
 | :--- | :---: | :--- |
 | Windows portable | **Ready** | One executable, no installation |
 | Windows installer | **Ready** | Open with and optional file associations |
-| macOS and Linux | Planned | Core architecture is cross-platform |
+| macOS and Linux | **Ready** | Native packages for Intel, ARM64, and x64 |
 
 ## Release checklist
 
@@ -16,6 +16,7 @@
 - [x] Relative images and local document links
 - [x] Explicit saving and unsaved-change warnings
 - [x] Accessible light and dark reading themes
+- [x] Native Windows, macOS, and Linux packages
 - [ ] Code signing for broad public distribution
 
 ## Configuration

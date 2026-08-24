@@ -10,14 +10,30 @@ permissions:
   contents: read
 
 jobs:
-  windows:
-    name: Windows build and test
-    runs-on: windows-latest
-    timeout-minutes: 30
+  desktop:
+    name: ${{ matrix.name }} build and test
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows x64
+            runner: windows-latest
+          - name: macOS Apple Silicon
+            runner: macos-latest
+          - name: Linux x64
+            runner: ubuntu-22.04
 
     steps:
       - name: Check out source
         uses: actions/checkout@v7
+
+      - name: Install Linux build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -27,6 +43,11 @@ jobs:
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build artifacts
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
 
       - name: Install build dependencies
         run: npm ci
@@ -43,5 +64,7 @@ jobs:
       - name: Run Rust lints
         run: cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
 
-      - name: Build production packages
+      - name: Build production package
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ runner.os == 'macOS' && '-' || '' }}
         run: npm run build

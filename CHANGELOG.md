@@ -6,9 +6,25 @@ All notable changes to FeatherMark are documented here. The project follows [Sem
 
 ### Planned
 
-- Code signing for public Windows releases.
-- Clean-machine verification on supported Windows 10 and Windows 11 versions.
-- Native packaging investigation for macOS and Linux.
+- Publisher code signing and Apple notarization.
+- Clean-machine and real-hardware verification across supported operating systems.
+
+## [0.2.0] - 2026-08-24
+
+### Added
+
+- Native macOS DMGs for Apple Silicon and Intel Macs.
+- Native Linux DEB and AppImage packages for x64 and ARM64 systems.
+- Cross-platform CI on Windows, macOS, and Linux, plus five-platform release builds.
+- Automatic release-asset completeness checks and a SHA-256 checksum manifest.
+- macOS Finder file-open event handling and native Command-key shortcut labels.
+- macOS and Linux installation, runtime, build, file-association, and unsigned-package guidance.
+
+### Changed
+
+- Moved Windows-only NSIS settings into a platform-specific Tauri configuration file.
+- Updated the release workflow to publish only after all Windows, macOS, and Linux builds succeed.
+- Bumped the application and package version to 0.2.0.
 
 ## [0.1.0] - 2026-08-23
 
