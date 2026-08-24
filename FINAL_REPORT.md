@@ -14,16 +14,22 @@ The release workflow produces and checks all eight application downloads before 
 | Linux | ARM64 | DEB and AppImage |
 | Linux | x64 | DEB and AppImage |
 
-Every release also includes `SHA256SUMS.txt`, generated from the final files after all platform jobs succeed.
+Every release also includes `SHA256SUMS.txt`, generated from the final files after all platform jobs succeed. The [v0.2.0 release](https://github.com/Complicatons/FeatherMark/releases/tag/v0.2.0) was published after the [five-platform release workflow](https://github.com/Complicatons/FeatherMark/actions/runs/32722360612) completed successfully.
 
-The locally rebuilt Windows 0.2.0 artifacts measured:
+The published 0.2.0 artifacts measured:
 
 | Artifact | Size | SHA-256 |
 | --- | ---: | --- |
-| `FeatherMark-0.2.0-windows-x64-portable.exe` | 9,575,424 bytes (9.13 MiB) | `280DE4A12D3C9DE99B884278BFD9AC8386DF98E616DC43A621B5823CD0474561` |
-| `FeatherMark-0.2.0-windows-x64-setup.exe` | 2,081,886 bytes (1.99 MiB) | `290B6488D8F3EA42F70F065919B6A2AB97E00D567BF95E4D01EDDD40B460662B` |
+| `FeatherMark-0.2.0-windows-x64-portable.exe` | 9,616,896 bytes (9.17 MiB) | `7ebe3cc79bc9085f587d939eb4e2f1528eb4be014546e3d27de3c50a5bfba113` |
+| `FeatherMark-0.2.0-windows-x64-setup.exe` | 2,080,877 bytes (1.98 MiB) | `7e596ba17944d365cbe4274d8e8cbdcf645a98d85f31c7d218005da12feff800` |
+| `FeatherMark-0.2.0-macos-aarch64.dmg` | 3,107,080 bytes (2.96 MiB) | `5a8f2a8979b69fa7ba10f9711c022f73125d0dbe0180069134ea96752882523e` |
+| `FeatherMark-0.2.0-macos-x64.dmg` | 3,306,714 bytes (3.15 MiB) | `56a49ea8a8b2231dcc4c9f0685a79fdfa924bfa54c6be5425994b50893ee9e6d` |
+| `FeatherMark-0.2.0-linux-aarch64.deb` | 3,267,516 bytes (3.12 MiB) | `a9785a063610dae23151e877722c857779b6fed665e879b2f047687f4c9530d9` |
+| `FeatherMark-0.2.0-linux-aarch64.AppImage` | 79,067,656 bytes (75.40 MiB) | `1a96dd60661de3142bd7fcf58d3e0310fb9e948b4c5f17694bbe82ab5564c202` |
+| `FeatherMark-0.2.0-linux-x64.deb` | 3,193,162 bytes (3.05 MiB) | `0b184f9288f31a586b1c127366fa9f9ceed3f80315dff8f0b42e6cd912cfa3ea` |
+| `FeatherMark-0.2.0-linux-x64.AppImage` | 80,747,000 bytes (77.01 MiB) | `7a6ec2510f302467068df7b9b72673a9fe1149020688527a3f1b0c350c494448` |
 
-GitHub-hosted builds can differ slightly from local builds because compiler and packaging tool versions move. The release's checksum manifest is authoritative for downloaded artifacts.
+The locally rebuilt Windows artifacts were within 0.5% of the GitHub-hosted files. The release's checksum manifest remains the authoritative checksum reference for downloaded artifacts.
 
 ## Startup and memory
 
